@@ -4,7 +4,12 @@ export const loadFromStorage = async (key) => {
   try {
     if (key === 'workdays') {
       const res = await fetch(API_URL);
-      return await res.json();
+      const data = await res.json();
+      return data.map(w => ({
+        ...w,
+        workedHours: Number(w.workedHours),
+        overtime: Number(w.overtime)
+      }));
     } else if (key === 'config') {
       const res = await fetch(`${API_URL}/config`);
       return await res.json();
@@ -15,6 +20,7 @@ export const loadFromStorage = async (key) => {
     return null;
   }
 };
+
 
 export const saveToStorage = async (key, data) => {
   try {
