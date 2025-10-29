@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 
 const WorkdayForm = ({ onAdd }) => {
-  const [date, setDate] = useState('');
+  const getToday = () => new Date().toISOString().split('T')[0];
+  
+  const [date, setDate] = useState(getToday());
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
@@ -14,7 +16,7 @@ const WorkdayForm = ({ onAdd }) => {
 
     onAdd(date, startTime, endTime);
     
-    setDate('');
+    setDate(getToday());
     setStartTime('');
     setEndTime('');
   };

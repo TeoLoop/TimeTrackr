@@ -5,16 +5,29 @@ import WorkdayForm from './components/WorkdayForm';
 import FilterBar from './components/FilterBar';
 import ExportButtons from './components/ExportButtons';
 import WorkdayTable from './components/WorkdayTable';
-import { loadFromStorage, saveToStorage, deleteFromStorage } from './utils/storage';
+import { loadFromStorage, saveToStorage } from './utils/storage';
 import { calculateHours } from './utils/calculations';
+import { loadTheme } from './utils/theme';
+
 
 const App = () => {
+  useEffect(() => {
+    loadTheme();
+  }, []);
+
   const [workdays, setWorkdays] = useState([]);
   const [standardHours, setStandardHours] = useState(8);
   const [standardMinutes, setStandardMinutes] = useState(30);
   const [showConfig, setShowConfig] = useState(false);
-  const [filterStartDate, setFilterStartDate] = useState('');
-  const [filterEndDate, setFilterEndDate] = useState('');
+
+  // 🔹 Filtro por defecto: solo el mes actual
+  const today = new Date().toISOString().split('T')[0];
+  const firstDayOfMonth = new Date();
+  firstDayOfMonth.setDate(1);
+  const firstDay = firstDayOfMonth.toISOString().split('T')[0];
+
+  const [filterStartDate, setFilterStartDate] = useState(firstDay);
+  const [filterEndDate, setFilterEndDate] = useState(today);
 
   // 🔹 Cargar datos al iniciar
   useEffect(() => {
@@ -117,8 +130,8 @@ const App = () => {
             onStartDateChange={setFilterStartDate}
             onEndDateChange={setFilterEndDate}
             onClearFilters={() => {
-              setFilterStartDate('');
-              setFilterEndDate('');
+              setFilterStartDate(firstDay);
+              setFilterEndDate(today);
             }}
           />
 
