@@ -11,6 +11,12 @@ const WorkdayTable = ({ workdays, onDelete }) => {
   const totalEffective = totalWorked - 0.5 * workdays.length; // 0.5h (30min) por día
   const totalOvertime = workdays.reduce((acc, w) => acc + w.overtime, 0);
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const [year, month, day] = dateStr.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200">
       <table className="w-full">
@@ -40,7 +46,7 @@ const WorkdayTable = ({ workdays, onDelete }) => {
 
               return (
                 <tr key={w.id} className="hover:bg-gray-50 transition">
-                  <td className="px-4 py-3 text-sm">{w.date}</td>
+                  <td className="px-4 py-3 text-sm">{formatDate(w.date)}</td>
                   <td className="px-4 py-3 text-sm">{w.startTime}</td>
                   <td className="px-4 py-3 text-sm">{w.endTime}</td>
                   <td className="px-4 py-3 text-sm font-medium">{formatHours(w.workedHours)}</td>
